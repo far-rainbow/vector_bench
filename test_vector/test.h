@@ -1,8 +1,8 @@
 /*
  * test.h
  *
- *  Created on: 09 апр. 2015 г.
- *      Author: администратор
+ *  Created on: 09 04 2015
+ *      Author: administrator
  */
 
 #ifndef TEST_H_
