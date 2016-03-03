@@ -19,7 +19,7 @@
 #define INT 1
 #define GROW 2
 
-#define VECTORSIZE 4
+#define VECTORSIZE 4 /* does it going right? */
 typedef float __attribute__((vector_size (sizeof(float) * VECTORSIZE))) vecm;
 
 void finit(float *, int, int, int);
