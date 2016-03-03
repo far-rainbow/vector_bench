@@ -3,6 +3,8 @@
  *
  *  Created on: 08 04 2015
  *      Author: administrator
+ *
+ *  Notebook edition
  */
 
 #include <stdio.h>
