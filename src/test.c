@@ -10,7 +10,7 @@
 // BUILD IT WITH -O0 and -msse options to see most difference
 //
 // benchmark array size (floats) here!
-#define FLOAT_ARRAY_SIZE 32000000
+#define FLOAT_ARRAY_SIZE 96000000
 
 #include <stdio.h>
 #include <stdlib.h>
