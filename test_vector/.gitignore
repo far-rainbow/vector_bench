@@ -48,7 +48,3 @@ local.properties
 
 # Code Recommenders
 .recommenders/
-/Default/
-/.project
-/.cproject
-/.settings
