@@ -7,6 +7,8 @@
  *  Notebook edition
  */
 
+// BUILD IT WITH -O0 and -msse options to see most difference
+//
 // benchmark array size (floats) here!
 #define FLOAT_ARRAY_SIZE 32000000
 
