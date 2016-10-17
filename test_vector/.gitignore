@@ -48,7 +48,11 @@ local.properties
 
 # Code Recommenders
 .recommenders/
+<<<<<<< HEAD
 /Default/
 /.project
 /.cproject
 /.settings
+=======
+>>>>>>> refs/remotes/origin/master
+>>>>>>> branch 'master' of https://github.com/far-rainbow/vector_bench.git
