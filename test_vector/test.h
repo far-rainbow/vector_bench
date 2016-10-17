@@ -17,7 +17,11 @@
 #define GROW 2
 
 #define VECTORSIZE 4 /* does it going right? */
+<<<<<<< HEAD
 typedef float __attribute__ ((vector_size (sizeof(float) * VECTORSIZE))) vecm;
+=======
+typedef float __attribute__((vector_size (sizeof(float) * VECTORSIZE))) vecm;
+>>>>>>> branch 'master' of https://github.com/far-rainbow/vector_bench.git
 
 #define VECTOR_ARRAY_SIZE FLOAT_ARRAY_SIZE/VECTORSIZE
 
