@@ -28,7 +28,7 @@ void initFloatAB(float *, float *, int, int, int);
 void initVectorFloatAB(vecm *, vecm *, int, int, int);
 void floatArrayAdd(float *, float *, float *);
 void floatVectorArrayAdd(vecm *, vecm *, vecm *);
-void printFloatArrays(float *, float *, float *);
-void printVectorArrays(vecm *, vecm *, vecm *);
+void printFloatArrays(float *, float *, float *, int);
+void printVectorArrays(vecm *, vecm *, vecm *,int);
 
 #endif /* TEST_H_ */
