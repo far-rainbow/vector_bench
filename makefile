@@ -22,7 +22,7 @@ vectorbenchNATIVE_PROF:
 	gcc ./src/src/test.c -pg -fmessage-length=0 -ftest-coverage -fprofile-arcs -o vectorbenchNATIVE_PROF.exe -I./src/include
 	
 vectorbenchMP_PROF:
-	gcc ./src/src/test.c -pg -fopenmp -fmessage-length=0 -ftest-coverage -fprofile-arcs -o vectorbenchMP_PROF.exe -I./src/include
+	gcc ./src/src/test.c -pg -fopenmp -fmessage-length=0 -ftest-coverage -fprofile-arcs -o vectorbenchMP_PROF.exe -I./src/include -DOPENMP=1
 	
 clean:
 	-rm ./*.exe
