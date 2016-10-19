@@ -4,7 +4,7 @@
  *  Created on: 08 04 2015
  *      Author: administrator
  *
- *  Notebook edition
+ *	Server edition (for 64 * 1000 000 elements you need ~500 Mb of memory)
  */
 
 // BUILD IT WITH -O0 and -msse options to see most difference
