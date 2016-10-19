@@ -22,15 +22,11 @@
 #include <omp.h>
 #endif
 
-__float128 _PI = 3.1415926535897932384626433832795028;
-
 int main() {
 
 	int i,n;
 
 	double elapsedTime;
-
-	__mingw_printf("PI = %f128\n",_PI);
 
 	struct timeval timeStart, timeEnd;
 	struct timeval timeFloatAddStart, timeVectorAddStart;
