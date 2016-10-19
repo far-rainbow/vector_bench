@@ -10,8 +10,8 @@
 // BUILD IT WITH -O0 and -msse options to see most difference
 //
 // benchmark array size (floats) here!
-#define FLOAT_ARRAY_SIZE 100
-#define DEBUG_LINES 100
+#define FLOAT_ARRAY_SIZE 64000000
+#define DEBUG_LINES 40
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -85,7 +85,8 @@ int main() {
 	printf("Bench addition of two %d-element arrays of float:\n",
 			FLOAT_ARRAY_SIZE);
 
-	//printFloatArrays(fA,fB,fC,DEBUG_LINES);
+	printFloatArrays(fA,fB,fC,DEBUG_LINES);
+	printf("\n\n");
 	printVectorArrays(vA,vB,vC,DEBUG_LINES);
 
 	// free memory (compatibilty with some old compilers)
@@ -183,18 +184,21 @@ void initFloatArray(float *fA, int initMode, int valueA, int valueB) {
 
 #ifdef OPENMP
 #pragma omp parallel shared(fA) private(i,n)
-													{
-		n = (float)omp_get_thread_num();
+{
+		n = (float)(omp_get_thread_num()+1.1)/10;
 
 		#pragma omp for
-#endif
 		for (i = 0; i < FLOAT_ARRAY_SIZE; i++) {
 			//fA[i] = (float) valueA++ / 3.14159;
-
+			fA[i] = i+n;
+		}
+}
+#else
+		n = 0.777777;
+		for (i = 0; i < FLOAT_ARRAY_SIZE; i++) {
+			//fA[i] = (float) valueA++ / 3.14159;
 			fA[i] = n++;
 		}
-#ifdef OPENMP
-													}
 #endif
 
 		break;
@@ -238,8 +242,13 @@ void initVectorArray(vecm *vA, int initMode, int valueA, int valueB) {
 		}
 }
 #else
+		n = 0.777777;
 		for (i = 0; i < VECTOR_ARRAY_SIZE; i++) {
-			vA[i] = (vecm){i<<2,(i<<2)+1,(i<<2)+2,(i<<2)+3};
+			// slower
+			//vA[i] = (vecm){i<<2,(i<<2)+1,(i<<2)+2,(i<<2)+3} + (vecm){n,n,n,n};
+
+			// faster
+			vA[i] = (vecm){(i<<2)+n,(i<<2)+1+n,(i<<2)+2+n,(i<<2)+3+n};
 		}
 #endif
 
@@ -266,7 +275,7 @@ void floatVectorArrayAdd(vecm *vA, vecm *vB, vecm *vC) {
 void printFloatArrays(float *fA, float *fB, float *fC, int lines) {
 	int i;
 	for (i = 0; i < lines; i++) {
-		printf("farray #%d: (A)%f + (B)%f = (C)%f\n", i, fA[i], fB[i], fC[i]);
+		printf("float array element [#%d]: (A) %f + (B) %f = (C) %f\n", i, fA[i], fB[i], fC[i]);
 	}
 }
 
