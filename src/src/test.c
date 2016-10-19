@@ -10,7 +10,8 @@
 // BUILD IT WITH -O0 and -msse options to see most difference
 //
 // benchmark array size (floats) here!
-#define FLOAT_ARRAY_SIZE 64*1000000
+#define FLOAT_ARRAY_SIZE 100
+#define DEBUG_LINES 100
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,11 +22,15 @@
 #include <omp.h>
 #endif
 
+__float128 _PI = 3.1415926535897932384626433832795028;
+
 int main() {
 
 	int i,n;
 
 	double elapsedTime;
+
+	__mingw_printf("PI = %f128\n",_PI);
 
 	struct timeval timeStart, timeEnd;
 	struct timeval timeFloatAddStart, timeVectorAddStart;
@@ -80,8 +85,8 @@ int main() {
 	printf("Bench addition of two %d-element arrays of float:\n",
 			FLOAT_ARRAY_SIZE);
 
-	//printFloatArrays(fA,fB,fC,400);
-	printVectorArrays(vA,vB,vC,16);
+	//printFloatArrays(fA,fB,fC,DEBUG_LINES);
+	printVectorArrays(vA,vB,vC,DEBUG_LINES);
 
 	// free memory (compatibilty with some old compilers)
 	free(fA);
@@ -166,7 +171,7 @@ void initVectorFloatAB(vecm *vA, vecm *vB, int mode, int valueA, int valueB) {
 void initFloatArray(float *fA, int initMode, int valueA, int valueB) {
 
 	int i;
-	float n;
+	float n = (float)valueA;
 
 	switch (initMode) {
 	case INT:
@@ -186,7 +191,7 @@ void initFloatArray(float *fA, int initMode, int valueA, int valueB) {
 		for (i = 0; i < FLOAT_ARRAY_SIZE; i++) {
 			//fA[i] = (float) valueA++ / 3.14159;
 
-			fA[i] = n;
+			fA[i] = n++;
 		}
 #ifdef OPENMP
 													}
@@ -219,29 +224,23 @@ void initVectorArray(vecm *vA, int initMode, int valueA, int valueB) {
 #ifdef OPENMP
 #pragma omp parallel shared(vA) private(i,n) /* add vfA into private vars to use slow pointer loop */
 {
-		n = (float)omp_get_thread_num();
+		// rational part as thread tag
+		n = (float)(omp_get_thread_num()+1.1)/10;
 
 		#pragma omp for
-#endif
-
 		for (i = 0; i < VECTOR_ARRAY_SIZE; i++) {
 
-			/*	this is pointer loop vector pack init -- realy slow
-			 *
-			 *	vfA = (float *) &vA[i];
-			 *
-			 *	for (j = 0; j < VECTORSIZE; j++) {
-			 *		vfA[j] = valueA++ / 3.14159;
-			 *		vfA[j] = n;
-			 *	}
-			 */
+			// slower
+			//vA[i] = (vecm){i<<2,(i<<2)+1,(i<<2)+2,(i<<2)+3} + (vecm){n,n,n,n};
 
-			/* this is one line vector pack init -- 10 times faster! */
-			vA[i] = (vecm){n,n+1,n+2,n+3};
+			// faster
+			vA[i] = (vecm){(i<<2)+n,(i<<2)+1+n,(i<<2)+2+n,(i<<2)+3+n};
 		}
-
-#ifdef OPENMP
 }
+#else
+		for (i = 0; i < VECTOR_ARRAY_SIZE; i++) {
+			vA[i] = (vecm){i<<2,(i<<2)+1,(i<<2)+2,(i<<2)+3};
+		}
 #endif
 
 		break;
