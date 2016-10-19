@@ -25,12 +25,13 @@ int main() {
 
 	int i,n;
 
+	double elapsedTime;
+
 	struct timeval timeStart, timeEnd;
 	struct timeval timeFloatAddStart, timeVectorAddStart;
 	struct timeval timeFloatAddEnd, timeVectorAddEnd;
 	struct timeval timeFloatInitStart, timeVectorInitStart;
 	struct timeval timeFloatInitEnd, timeVectorInitEnd;
-	double elapsedTime;
 
 	gettimeofday(&timeStart, NULL);
 
