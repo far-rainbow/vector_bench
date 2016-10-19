@@ -4,3 +4,6 @@
 /gmon.out
 /.travis.yml
 /.gitattributes
+/.project
+/.cproject
+/.travis.yml
