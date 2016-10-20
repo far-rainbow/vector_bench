@@ -1,28 +1,37 @@
-all: vectorbenchMP vectorbenchNATIVE vectorbenchNATIVE_PROF vectorbenchNATIVE_O0 vectorbenchNATIVE_O1 vectorbenchNATIVE_O2 vectorbenchNATIVE_O3
+CC=gcc
 
-vectorbenchMP:
-	gcc ./src/src/test.c -fopenmp -o vectorbenchMP.exe -I./src/include -DOPENMP=1
+all: vectorbenchMP
 
-vectorbenchNATIVE:
-	gcc ./src/src/test.c -o vectorbenchNATIVE.exe -I./src/include
+vectorbenchMP: test.o init.o initSIMD.o initSIMDMP.o init_wrappers.o
+	gcc -fopenmp test.o init.o initSIMD.o initSIMDMP.o init_wrappers.o -o vectorbenchMP.exe
 
-vectorbenchNATIVE_O3:
-	gcc ./src/src/test.c -o vectorbenchNATIVE_O3.exe -I./src/include -O3
+test.o: ./src/src/test.c
+	$(CC) -fopenmp -I./src/include -c ./src/src/test.c
 	
-vectorbenchNATIVE_O2:
-	gcc ./src/src/test.c -o vectorbenchNATIVE_O2.exe -I./src/include -O2
+init.o: ./src/src/init.c
+	$(CC) -fopenmp -I./src/include -c ./src/src/init.c -DOPENMP_ENABLE
+	$(CC) -fopenmp -I./src/include -c ./src/src/init.c -DOPENMP_ENABLE -S -o init.s
 	
-vectorbenchNATIVE_O1:
-	gcc ./src/src/test.c -o vectorbenchNATIVE_O1.exe -I./src/include -O1
+init_wrappers.o: ./src/src/init_wrappers.c
+	$(CC) -fopenmp -I./src/include -c ./src/src/init_wrappers.c
+	$(CC) -fopenmp -I./src/include -c ./src/src/init_wrappers.c -S -o init_wrappers.s
 	
-vectorbenchNATIVE_O0:
-	gcc ./src/src/test.c -o vectorbenchNATIVE_O0.exe -I./src/include -O0
+initSIMD.o: ./src/src/initSIMD.c
+	$(CC) -fopenmp -I./src/include -c ./src/src/initSIMD.c
+	$(CC) -fopenmp -I./src/include -c ./src/src/initSIMD.c -S -o initSIMD.s
+
+initSIMDMP.o: ./src/src/initSIMD.c	
+	$(CC) -fopenmp -I./src/include -c ./src/src/initSIMDMP.c
+	$(CC) -fopenmp -I./src/include -c ./src/src/initSIMDMP.c -S -o initSIMDMP.s
 	
+#vectorbenchNATIVE:
+#	$(CC) ./src/src/* -o vectorbenchNATIVE.exe -I./src/include
+
 vectorbenchNATIVE_PROF:
-	gcc ./src/src/test.c -pg -fmessage-length=0 -ftest-coverage -fprofile-arcs -o vectorbenchNATIVE_PROF.exe -I./src/include
+	$(CC) ./src/src/test.c -pg -fmessage-length=0 -ftest-coverage -fprofile-arcs -o vectorbenchNATIVE_PROF.exe -I./src/include
 	
 vectorbenchMP_PROF:
-	gcc ./src/src/test.c -pg -fopenmp -fmessage-length=0 -ftest-coverage -fprofile-arcs -o vectorbenchMP_PROF.exe -I./src/include -DOPENMP=1
+	$(CC) ./src/src/test.c -pg -fopenmp -fmessage-length=0 -ftest-coverage -fprofile-arcs -o vectorbenchMP_PROF.exe -I./src/include -DOPENMP=1
 	
 clean:
-	-rm ./*.exe
+	-rm ./*.exe ./*.o ./*.s
