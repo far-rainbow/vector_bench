@@ -7,25 +7,14 @@
  *	Server edition (for 64 * 1000 000 elements you need ~500 Mb of memory)
  */
 
-// BUILD IT WITH -O0 and -msse options to see most difference
-//
-// benchmark array size (floats) here!
-#define FLOAT_ARRAY_SIZE 64000000
-#define DEBUG_LINES 40
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
-#include "test.h"
+#include "def.h"
 
-#ifdef OPENMP
-#include <omp.h>
-#endif
-
-int main() {
+int main(int argc,char **argv) {
 
 	int i,n;
-
 	double elapsedTime;
 
 	struct timeval timeStart, timeEnd;
@@ -33,7 +22,7 @@ int main() {
 	struct timeval timeFloatAddEnd, timeVectorAddEnd;
 	struct timeval timeFloatInitStart, timeVectorInitStart;
 	struct timeval timeFloatInitEnd, timeVectorInitEnd;
-
+	// start time profile
 	gettimeofday(&timeStart, NULL);
 
 	//	two input arrays and one output (A + B = C)
@@ -102,8 +91,7 @@ int main() {
 			elapsedTime);
 
 	elapsedTime = (timeFloatInitEnd.tv_sec - timeFloatInitStart.tv_sec) * 1000.0; // sec to ms
-	elapsedTime += (timeFloatInitEnd.tv_usec - timeFloatInitStart.tv_usec)
-			/ 1000.0;   // us to ms
+	elapsedTime += (timeFloatInitEnd.tv_usec - timeFloatInitStart.tv_usec) / 1000.0;   // us to ms
 
 	printf("\nInit of two arrays of float[%d]: %.2f ms\n", FLOAT_ARRAY_SIZE,
 			elapsedTime);
@@ -132,126 +120,6 @@ int main() {
 			FLOAT_ARRAY_SIZE, elapsedTime);
 
 	return (0);
-}
-
-void initFloatAB(float *fA, float *fB, int mode, int valueA, int valueB) {
-	switch (mode) {
-	case INIT_EASY:
-		initFloatArray(fA, INT, valueA, ZERO);
-		initFloatArray(fB, INT, valueB, ZERO);
-		break;
-	case INIT_GROW:
-		initFloatArray(fA, GROW, valueA, ZERO);
-		initFloatArray(fB, GROW, valueB, ZERO);
-		break;
-	default:
-		break;
-	}
-}
-
-void initVectorFloatAB(vecm *vA, vecm *vB, int mode, int valueA, int valueB) {
-	switch (mode) {
-	case INIT_EASY:
-		initVectorArray(vA, INT, valueA, ZERO);
-		initVectorArray(vB, INT, valueB, ZERO);
-		break;
-	case INIT_GROW:
-		initVectorArray(vA, GROW, valueA, valueB);
-		initVectorArray(vB, GROW, valueB, valueA);
-		break;
-	default:
-		break;
-	}
-}
-
-// valueB is not used. future feature stub
-void initFloatArray(float *fA, int initMode, int valueA, int valueB) {
-
-	int i;
-	float n = (float)valueA;
-
-	switch (initMode) {
-	case INT:
-		for (i = 0; i < FLOAT_ARRAY_SIZE; i++) {
-			fA[i] = (float) valueA;
-		}
-		break;
-	case GROW:
-
-#ifdef OPENMP
-#pragma omp parallel shared(fA) private(i,n)
-{
-		n = (float)(omp_get_thread_num()+1.1)/10;
-
-		#pragma omp for
-		for (i = 0; i < FLOAT_ARRAY_SIZE; i++) {
-			//fA[i] = (float) valueA++ / 3.14159;
-			fA[i] = i+n;
-		}
-}
-#else
-		n = 0.777777;
-		for (i = 0; i < FLOAT_ARRAY_SIZE; i++) {
-			//fA[i] = (float) valueA++ / 3.14159;
-			fA[i] = n++;
-		}
-#endif
-
-		break;
-	default:
-	break;
-	}
-}
-
-// valueB is not used. future feature stub
-void initVectorArray(vecm *vA, int initMode, int valueA, int valueB) {
-
-	int i, j;
-	float n;
-	float *vfA;
-
-	switch (initMode) {
-	case INT:
-		for (i = 0; i < VECTOR_ARRAY_SIZE; i++) {
-			vfA = (float *) &vA[i];
-			for (j = 0; j < VECTORSIZE; j++) {
-				vfA[j] = valueA;
-			}
-		}
-		break;
-	case GROW:
-
-#ifdef OPENMP
-#pragma omp parallel shared(vA) private(i,n) /* add vfA into private vars to use slow pointer loop */
-{
-		// rational part as thread tag
-		n = (float)(omp_get_thread_num()+1.1)/10;
-
-		#pragma omp for
-		for (i = 0; i < VECTOR_ARRAY_SIZE; i++) {
-
-			// slower
-			//vA[i] = (vecm){i<<2,(i<<2)+1,(i<<2)+2,(i<<2)+3} + (vecm){n,n,n,n};
-
-			// faster
-			vA[i] = (vecm){(i<<2)+n,(i<<2)+1+n,(i<<2)+2+n,(i<<2)+3+n};
-		}
-}
-#else
-		n = 0.777777;
-		for (i = 0; i < VECTOR_ARRAY_SIZE; i++) {
-			// slower
-			//vA[i] = (vecm){i<<2,(i<<2)+1,(i<<2)+2,(i<<2)+3} + (vecm){n,n,n,n};
-
-			// faster
-			vA[i] = (vecm){(i<<2)+n,(i<<2)+1+n,(i<<2)+2+n,(i<<2)+3+n};
-		}
-#endif
-
-		break;
-	default:
-		break;
-	}
 }
 
 void floatArrayAdd(float *fA, float *fB, float *fC) {

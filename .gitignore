@@ -8,10 +8,9 @@
 /.cproject
 /.travis.yml
 /.settings/
-/vectorbenchMP.exe
-/vectorbenchNATIVE_O0.exe
-/vectorbenchNATIVE_O1.exe
-/vectorbenchNATIVE_O2.exe
-/vectorbenchNATIVE_O3.exe
-/vectorbenchNATIVE_PROF.exe
-/vectorbenchNATIVE.exe
+/*.exe
+/*.o
+/*.s
+/*.gcda
+/*.gcno
+/*.out
