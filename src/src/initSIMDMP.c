@@ -5,7 +5,7 @@
 void initFloatArraySIMDMP(float *fA, int initMode, int valueA, int valueB) {
 
 	int i;
-	float n = (float)valueA;
+	float n;
 
 	switch (initMode) {
 	case INT:
@@ -17,10 +17,9 @@ void initFloatArraySIMDMP(float *fA, int initMode, int valueA, int valueB) {
 
 #pragma omp parallel shared(fA) private(i,n)
 {
-		n = (float)(omp_get_thread_num()+1.1)/1;
+		n = (float)(omp_get_thread_num()+1.1)/10 + valueA;
 #pragma omp for
 		for (i = 0; i < FLOAT_ARRAY_SIZE; i++) {
-			//fA[i] = (float) valueA++ / 3.14159;
 			fA[i] = i+n;
 		}
 }

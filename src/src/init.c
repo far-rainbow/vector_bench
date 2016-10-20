@@ -1,14 +1,14 @@
 #include <def.h>
 
 #ifdef OPENMP_ENABLE
-//#define OPENMP
+#define OPENMP
 #endif
 
 // valueB is not used. future feature stub
 void initFloatArray(float *fA, int initMode, int valueA, int valueB) {
 
 	int i;
-	float n = (float)valueA;
+	float n;
 
 	switch (initMode) {
 	case INT:
@@ -21,19 +21,17 @@ void initFloatArray(float *fA, int initMode, int valueA, int valueB) {
 #ifdef OPENMP
 #pragma omp parallel shared(fA) private(i,n)
 {
-		n = (float)(omp_get_thread_num()+1.1)/10;
+		n = (float)(omp_get_thread_num()+1.1)/10 + valueA;
 
 		#pragma omp for
 		for (i = 0; i < FLOAT_ARRAY_SIZE; i++) {
-			//fA[i] = (float) valueA++ / 3.14159;
 			fA[i] = i+n;
 		}
 }
 #else
-		n = 0.777777;
+		n = valueA;
 		for (i = 0; i < FLOAT_ARRAY_SIZE; i++) {
-			//fA[i] = (float) valueA++ / 3.14159;
-			fA[i] = n++;
+			fA[i] = i+n;
 		}
 #endif
 
