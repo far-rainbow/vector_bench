@@ -11,7 +11,7 @@
 #include <omp.h>
 
 /* benchmark array size (floats) here! */
-#define FLOAT_ARRAY_SIZE 40000000
+#define FLOAT_ARRAY_SIZE 100000000
 #define DEBUG_LINES 4
 /*-------------------------------------*/
 

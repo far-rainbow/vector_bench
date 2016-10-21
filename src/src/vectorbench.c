@@ -32,8 +32,24 @@ int main(int argc,char **argv) {
 	//	two input arrays and one output (A + B = C)
 	//	that`s test =)
 	float *fA = (float *) malloc(sizeof(float) * FLOAT_ARRAY_SIZE);
+	if (!fA) {
+		printf("malloc A failed\n");
+		return(1);
+	}
+
 	float *fB = (float *) malloc(sizeof(float) * FLOAT_ARRAY_SIZE);
+	if (!fB) {
+		printf("malloc B failed\n");
+		return(1);
+	}
+
 	float *fC = (float *) malloc(sizeof(float) * FLOAT_ARRAY_SIZE);
+	if (!fC) {
+		printf("malloc C failed\n");
+		return(1);
+	}
+
+	printf ("Mem assigned for float arrays: %d bytes\n",FLOAT_ARRAY_SIZE * 3 * sizeof(fA));
 
 	// init input arrays with some rubbish
 	// INIT_GROW is +1 sequence of values start with valueA for vA (this start = 111) and valueB for vB (this start = 222)
@@ -48,12 +64,35 @@ int main(int argc,char **argv) {
 	floatArrayAdd(fA, fB, fC);
 	gettimeofday(&timeFloatAddEnd, NULL);
 
+	printf("Float arrays bench done...\n");
+
+	// free memory (compatibilty with some old compilers)
+	free(fA);
+	free(fB);
+	free(fC);
+
 	// two input arrays and one output (A + B = C)
 	// with using type of vecm, so tests must be done with
 	// variation of compilers and optimization flags to catch and see the difference
 	vecm *vA = (vecm *) malloc(sizeof(vecm) * VECTOR_ARRAY_SIZE);
+	if (!vA) {
+		printf("malloc vA failed\n");
+		return(1);
+	}
+
 	vecm *vB = (vecm *) malloc(sizeof(vecm) * VECTOR_ARRAY_SIZE);
+	if (!vB) {
+		printf("malloc vB failed\n");
+		return(1);
+	}
+
 	vecm *vC = (vecm *) malloc(sizeof(vecm) * VECTOR_ARRAY_SIZE);
+	if (!vC) {
+		printf("malloc vC failed\n");
+		return(1);
+	}
+
+	printf ("Mem assigned for vector float arrays: %d bytes\n",VECTOR_ARRAY_SIZE * 3 * sizeof(*vA));
 
 	// init input arrays with some rubbish
 	// INIT_GROW is +1 sequence of values start with valueA for vA (this start = 111) and valueB for vB (this start = 222)
@@ -68,6 +107,8 @@ int main(int argc,char **argv) {
 	floatVectorArrayAdd(vA, vB, vC);
 	gettimeofday(&timeVectorAddEnd, NULL);
 
+	printf("Float vector arrays bench done...\n------------------------------------------------------------------------\n");
+
 	//fprintresult(fA, fB, fC);
 	//vprintresult(vA, vB, vC);
 
@@ -79,9 +120,6 @@ int main(int argc,char **argv) {
 	printVectorArrays(vA,vB,vC,DEBUG_LINES);
 
 	// free memory (compatibilty with some old compilers)
-	free(fA);
-	free(fB);
-	free(fC);
 	free(vA);
 	free(vB);
 	free(vC);

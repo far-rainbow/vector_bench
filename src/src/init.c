@@ -1,7 +1,7 @@
 #include <def.h>
 
 #ifdef OPENMP_ENABLE
-#define OPENMP
+//#define OPENMP
 #endif
 
 // valueB is not used. future feature stub
