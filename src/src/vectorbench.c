@@ -22,6 +22,10 @@ int main(int argc,char **argv) {
 	struct timeval timeFloatAddEnd, timeVectorAddEnd;
 	struct timeval timeFloatInitStart, timeVectorInitStart;
 	struct timeval timeFloatInitEnd, timeVectorInitEnd;
+
+	// debug only
+	setvbuf(stdout, NULL, _IONBF, 0);
+
 	// start time profile
 	gettimeofday(&timeStart, NULL);
 
