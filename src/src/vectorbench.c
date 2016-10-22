@@ -9,12 +9,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/time.h>
 #include "def.h"
 
 int main(int argc,char **argv) {
 
-	int i,n;
+	int b,i,n;
 	double elapsedTime;
 
 	struct timeval timeStart, timeEnd;
@@ -56,8 +55,15 @@ int main(int argc,char **argv) {
 	// so first value in vC shall be 333.
 	// INIT_EASY is just a fill with valueA
 	gettimeofday(&timeFloatInitStart, NULL);
-	initFloatAB(fA, fB, INIT_GROW, 111, 222);
+	for (b=0;b<BENCH_PASSES;b++) {
+		initFloatAB(fA, fB, INIT_GROW, 111, 222);
+		printf("initFloat pass %d done...\n",b);
+	}
 	gettimeofday(&timeFloatInitEnd, NULL);
+
+	//benchIT(&timeFloatInitStart,&timeFloatInitEnd, (*pF)(initFloatAB(fA, fB, INIT_GROW, 111, 222)) );
+
+	// initFloatAB(fA, fB, INIT_GROW, 111, 222)
 
 	// A + B = C with default float arrays
 	gettimeofday(&timeFloatAddStart, NULL);
@@ -135,16 +141,16 @@ int main(int argc,char **argv) {
 	elapsedTime = (timeFloatInitEnd.tv_sec - timeFloatInitStart.tv_sec) * 1000.0; // sec to ms
 	elapsedTime += (timeFloatInitEnd.tv_usec - timeFloatInitStart.tv_usec) / 1000.0;   // us to ms
 
-	printf("\nInit of two arrays of float[%d]: %.2f ms\n", FLOAT_ARRAY_SIZE,
-			elapsedTime);
+	printf("\nwieghted init of two arrays of float[%d]: ~%.2f ms\n", FLOAT_ARRAY_SIZE,
+			elapsedTime/BENCH_PASSES);
 
 	elapsedTime = (timeVectorInitEnd.tv_sec - timeVectorInitStart.tv_sec)
 			* 1000.0;      // sec to ms
 	elapsedTime += (timeVectorInitEnd.tv_usec - timeVectorInitStart.tv_usec)
 			/ 1000.0;   // us to ms
 
-	printf("\nInit of two arrays of vector float[%d]: %.2f ms\n",
-			FLOAT_ARRAY_SIZE, elapsedTime);
+	printf("\nwieghted init of two arrays of vector float[%d]: ~%.2f ms\n",
+			FLOAT_ARRAY_SIZE/BENCH_PASSES, elapsedTime);
 
 	elapsedTime = (timeFloatAddEnd.tv_sec - timeFloatAddStart.tv_sec) * 1000.0; // sec to ms
 	elapsedTime += (timeFloatAddEnd.tv_usec - timeFloatAddStart.tv_usec)
@@ -201,3 +207,12 @@ void printVectorArrays(vecm *vA, vecm *vB, vecm *vC, int lines) {
 	}
 }
 
+/*void benchIT(struct timeval *timeStart,struct timeval *timeEnd, pF ) {
+	int i = BENCH_PASSES;
+	gettimeofday(timeStart, NULL);
+	for (i=0;i<BENCH_PASSES;i++) {
+		//f(fA, fB, INIT_GROW, 111, 222);
+		printf("initFloat pass %d done...\n",i);
+	}
+	gettimeofday(timeEnd, NULL);
+}*/

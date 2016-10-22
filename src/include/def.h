@@ -13,6 +13,7 @@
 /* benchmark array size (floats) here! */
 #define FLOAT_ARRAY_SIZE 100000000
 #define DEBUG_LINES 4
+#define BENCH_PASSES 10
 /*-------------------------------------*/
 
 #define ZERO 0
@@ -43,5 +44,10 @@ void floatVectorArrayAdd(vecm *, vecm *, vecm *);
 
 void printFloatArrays(float *, float *, float *, int);
 void printVectorArrays(vecm *, vecm *, vecm *,int);
+
+#include <sys/time.h>
+
+typedef void (*pF)(float *,float *,int,int,int);
+void benchIT(struct timeval*,struct timeval*, pF );
 
 #endif /* TEST_H_ */
