@@ -13,7 +13,7 @@
 /* benchmark array size (floats) here! */
 #define FLOAT_ARRAY_SIZE 100000000
 #define DEBUG_LINES 4
-#define BENCH_PASSES 10
+#define BENCH_PASSES 100
 /*-------------------------------------*/
 
 #define ZERO 0
