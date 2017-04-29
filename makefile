@@ -3,8 +3,8 @@ PROF='ftest-coverage -fprofile-arcs'
 
 all: vectorbenchMP
 
-vectorbenchMP: vectorbench.o init.o initSIMD.o initSIMDMP.o init_wrappers.o
-	gcc -pg -fopenmp vectorbench.o init.o initSIMD.o initSIMDMP.o init_wrappers.o -o vectorbenchMP.exe
+vectorbenchMP: vectorbench.o init.o initSIMD.o initSIMDMP.o init_wrappers.o tests.o
+	gcc -pg -fopenmp vectorbench.o init.o init_wrappers.o initSIMD.o initSIMDMP.o tests.o -o vectorbenchMP.exe
 
 vectorbench.o: ./src/src/vectorbench.c
 	$(CC) -fopenmp -I./src/include -c ./src/src/vectorbench.c
@@ -21,9 +21,13 @@ initSIMD.o: ./src/src/initSIMD.c
 	$(CC) -fopenmp -I./src/include -c ./src/src/initSIMD.c
 	$(CC) -fopenmp -I./src/include -c ./src/src/initSIMD.c -S -o initSIMD.s
 
-initSIMDMP.o: ./src/src/initSIMDMP.c	
+initSIMDMP.o: ./src/src/initSIMDMP.c
 	$(CC) -fopenmp -I./src/include -c ./src/src/initSIMDMP.c
 	$(CC) -fopenmp -I./src/include -c ./src/src/initSIMDMP.c -S -o initSIMDMP.s
+	
+tests.o: ./src/src/tests.c
+	$(CC) -fopenmp -I./src/include -c ./src/src/tests.c
+	$(CC) -fopenmp -I./src/include -c ./src/src/tests.c -S -o tests.s
 	
 #vectorbenchNATIVE:
 #	$(CC) ./src/src/* -o vectorbenchNATIVE.exe -I./src/include

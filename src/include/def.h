@@ -1,10 +1,3 @@
-/*
- * test.h
- *
- *  Created on: 09 04 2015
- *      Author: administrator
- */
-
 #ifndef TEST_H_
 #define TEST_H_
 
@@ -23,6 +16,9 @@
 
 #define INT 1
 #define GROW 2
+
+#define TEST_0 0
+#define TEST_1 1
 
 #define VECTORSIZE 4 /* does it going right? */
 
@@ -49,5 +45,7 @@ void printVectorArrays(vecm *, vecm *, vecm *,int);
 
 typedef void (*pF)(float *,float *,int,int,int);
 void benchIT(struct timeval*,struct timeval*, pF );
+
+int testing (int , int );
 
 #endif /* TEST_H_ */

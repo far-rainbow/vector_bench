@@ -1,10 +1,3 @@
-/*
- * init_wrappers.c
- *
- *  Created on: 20 окт. 2016 г.
- *      Author: test
- */
-
 #include <def.h>
 
 void initFloatAB(float *fA, float *fB, int mode, int valueA, int valueB) {

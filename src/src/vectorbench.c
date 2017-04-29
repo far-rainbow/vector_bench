@@ -28,6 +28,10 @@ int main(int argc,char **argv) {
 	// start time profile
 	gettimeofday(&timeStart, NULL);
 
+	testing(100500,TEST_0);
+	testing(500100,TEST_1);
+	testing(0,2);
+
 	//	two input arrays and one output (A + B = C)
 	//	that`s test =)
 	float *fA = (float *) malloc(sizeof(float) * FLOAT_ARRAY_SIZE);

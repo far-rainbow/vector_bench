@@ -41,7 +41,7 @@ void initFloatArray(float *fA, int initMode, int valueA, int valueB) {
 	}
 }
 
-// valueB is not used. future feature stub
+// valueB is not used. future stub
 void initVectorArray(vecm *vA, int initMode, int valueA, int valueB) {
 
 	int i, j;
