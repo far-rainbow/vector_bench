@@ -1,5 +1,5 @@
 # vector_bench
-Benchmark CPU with operation on massives of types float and __vector(4)float
+Benchmark CPU with operation on massives of type float and __vector(4)float
 
 # build targets
 - all               --  build all executables
