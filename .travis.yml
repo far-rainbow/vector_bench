@@ -11,4 +11,6 @@ branches:
   only:
   - master
 
-script: make all
+script:
+  - make all
+  - vectorbench
