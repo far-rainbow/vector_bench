@@ -1,0 +1,14 @@
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+  
+env:
+  - OMP_NUM_THREADS=4
+  
+branches:
+  only:
+  - master
+
+script: make all
